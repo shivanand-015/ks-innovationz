@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator Hub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#020617;color:#e2e8f0;overflow-x:hidden}
+
+:root{
+  --grad:linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899);
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  width:500px;height:500px;
+  background:radial-gradient(circle,#8b5cf6,transparent);
+  top:-150px;left:-150px;
+  filter:blur(120px);
+  opacity:.4;
+}
+
+nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 60px;background:rgba(2,6,23,0.7);
+  backdrop-filter:blur(12px);
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700}
+.logo img{height:40px}
+
+nav ul{display:flex;gap:25px;list-style:none}
+nav li{cursor:pointer;position:relative}
+nav li::after{
+  content:'';position:absolute;height:2px;width:0;
+  background:var(--grad);bottom:-6px;left:0;transition:.3s
+}
+nav li:hover::after{width:100%}
+
+.hero{text-align:center;padding:140px 20px}
+.hero h1{
+  font-size:3rem;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent
+}
+.hero p{margin:20px 0;color:#94a3b8}
+
+.hero button{
+  margin:10px;padding:14px 30px;border:none;border-radius:30px;
+  cursor:pointer;font-weight:600
+}
+
+.btn-primary{background:var(--grad);color:white}
+.btn-primary:hover{transform:scale(1.1)}
+.btn-secondary{
+  border:1px solid #6366f1;background:transparent;color:#a5b4fc
+}
+
+section{padding:80px 60px}
+.section-title{text-align:center;margin-bottom:40px}
+
+.categories{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px
+}
+.card{
+  background:rgba(255,255,255,0.05);
+  padding:25px;border-radius:15px;text-align:center;
+  transition:.3s
+}
+.card:hover{transform:translateY(-8px)}
+
+.profiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px
+}
+.profile-card{
+  background:rgba(255,255,255,0.05);
+  padding:20px;border-radius:15px;
+  transition:.3s
+}
+.profile-card:hover{transform:translateY(-8px)}
+.profile-card img{
+  width:100%;height:160px;border-radius:10px
+}
+.profile-card button{
+  width:100%;margin-top:10px;padding:10px;
+  background:var(--grad);color:white;border:none;border-radius:8px
+}
+
+form{
+  max-width:500px;margin:auto;
+  display:flex;flex-direction:column;gap:15px
+}
+input,select{
+  padding:12px;border-radius:8px;border:none;
+  background:#1e293b;color:white
+}
+form button{
+  padding:12px;background:var(--grad);
+  color:white;border:none;border-radius:8px
+}
+
+footer{text-align:center;padding:20px;color:#64748b}
+
+.fade{opacity:0;transform:translateY(40px);transition:.6s}
+.fade.show{opacity:1;transform:translateY(0)}
+</style>
+
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="https://via.placeholder.com/40">
+    Creator Hub
+  </div>
+  <ul>
+    <li>Home</li>
+    <li>Explore Talent</li>
+    <li>Join</li>
+    <li>Login</li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1>Find the Perfect Creator Talent</h1>
+  <p>Hire editors, designers, and writers easily</p>
+  <button class="btn-primary">Explore Talent</button>
+  <button class="btn-secondary">Join as Freelancer</button>
+</section>
+
+<section>
+  <h2 class="section-title">Categories</h2>
+  <div class="categories">
+    <div class="card fade">🎬 Video Editor</div>
+    <div class="card fade">🎨 Graphic Designer</div>
+    <div class="card fade">✍️ Content Writer</div>
+  </div>
+</section>
+
+<!-- ✅ UPDATED PROFILES SECTION -->
+<section>
+  <h2 class="section-title">Featured Profiles</h2>
+  <div class="profiles" id="profiles"></div>
+</section>
+
+<section>
+  <h2 class="section-title">Join as Freelancer</h2>
+
+  <form class="fade" onsubmit="saveUser(event)">
+    <input id="name" placeholder="Name">
+    
+    <select id="skill">
+      <option>Select Skill</option>
+      <option>Video Editor</option>
+      <option>Graphic Designer</option>
+      <option>Content Writer</option>
+    </select>
+
+    <input id="experience" placeholder="Experience">
+    <input id="whatsapp" placeholder="WhatsApp Number">
+    <input id="portfolio" placeholder="Portfolio Link">
+
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+<footer>
+  © 2026 Creator Hub
+</footer>
+
+<script>
+const elements=document.querySelectorAll('.fade');
+window.addEventListener('scroll',()=>{
+  elements.forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight-50){
+      el.classList.add('show')
+    }
+  })
+})
+</script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDJj9aqdfxVeWxKh4eb4zlaP-b-1Nn3vjM",
+  authDomain: "creatorhub-7a23f.firebaseapp.com",
+  projectId: "creatorhub-7a23f",
+  storageBucket: "creatorhub-7a23f.appspot.com",
+  messagingSenderId: "173292625440",
+  appId: "1:173292625440:web:9eacfd3b85ec9f9683e645"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
+
+<!-- SAVE USER -->
+<script>
+function saveUser(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const skill = document.getElementById("skill").value;
+  const experience = document.getElementById("experience").value;
+  const whatsapp = document.getElementById("whatsapp").value;
+  const portfolio = document.getElementById("portfolio").value;
+
+  db.collection("users").add({
+    name,
+    skill,
+    experience,
+    whatsapp,
+    portfolio
+  })
+  .then(() => {
+    alert("Profile Saved Successfully!");
+    loadUsers(); // 🔥 reload users instantly
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+</script>
+
+<!-- LOAD USERS -->
+<script>
+function loadUsers() {
+  const container = document.getElementById("profiles");
+  container.innerHTML = "";
+
+  db.collection("users").get().then((snapshot) => {
+    snapshot.forEach((doc) => {
+      const user = doc.data();
+
+      const card = `
+        <div class="profile-card">
+          <img src="https://via.placeholder.com/300">
+          <h3>${user.name}</h3>
+          <p>${user.skill}</p>
+          <p>${user.experience}</p>
+          <a href="https://wa.me/${user.whatsapp}" target="_blank">
+            <button>Contact</button>
+          </a>
+        </div>
+      `;
+
+      container.innerHTML += card;
+    });
+  });
+}
+
+window.onload = loadUsers;
+</script>
+
+</body>
+</html>
